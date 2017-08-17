@@ -28,6 +28,10 @@ set_time_limit( 0 );
 				Utils::help();
 				break;
 
+			case '-c':
+				$myphpdirb->setDisplayColors();
+				break;
+
 			case '-d':
 				$myphpdirb->setDisplayHttpCode( $_SERVER['argv'][$i+1] );
 				$i++;

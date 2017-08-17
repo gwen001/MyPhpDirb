@@ -10,6 +10,7 @@ class MyPhpDirb
 {
 	CONST MAGIC_WORD = 'FUZZ';
 	CONST DEFAULT_MAX_CHILD = 5;
+	CONST DEFAULT_COLOR = 'white';
 	
 	private $url = null;
 
@@ -22,6 +23,7 @@ class MyPhpDirb
 	/**
 	 * output stuff
 	 */
+	private $display_colors = false;
 	private $display_full_url = false;
 	private $display_http_code = null;
 	private $display_ignore_http_code = null;
@@ -36,6 +38,20 @@ class MyPhpDirb
 		'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A',
 	];
 
+	private $t_colors = [
+		0   => 'dark_grey',
+		200 => 'light_green',
+		301 => 'green',
+		302 => 'green',
+		307 => 'green',
+		400 => 'red',
+		401 => 'blue',
+		403 => 'blue',
+		404 => 'red',
+		500 => 'dark_grey',
+		503 => 'dark_grey',
+	];
+	
 	/**
 	 * daemon stuff
 	 *
@@ -91,6 +107,15 @@ class MyPhpDirb
 	}
 	public function setFollowRedirection() {
 		$this->follow_redirection = true;
+		return true;
+	}
+
+	
+	public function getDisplayColors() {
+		return $this->colors;
+	}
+	public function setDisplayColors() {
+		$this->display_colors = true;
 		return true;
 	}
 
@@ -221,9 +246,17 @@ class MyPhpDirb
 		{
 			if( !$this->display_ignore_http_code || !in_array($t_infos['http_code'],$this->display_ignore_http_code) )
 			{
+				if( $this->display_colors ) {
+					if( isset($this->t_colors[$t_infos['http_code']]) ) {
+						$color = $this->t_colors[ $t_infos['http_code'] ];
+					} else {
+						$color = self::DEFAULT_COLOR;
+					}
+				} else {
+					$color = null;
+				}
+				
 				$word = $this->t_words[ $w_index ];
-				//$url = str_replace( self::MAGIC_WORD, $word, $this->url );
-				//var_dump( $url );
 				
 				if( $this->display_full_url ) {
 					$url = str_replace( self::MAGIC_WORD, $word, $this->url );
@@ -233,8 +266,20 @@ class MyPhpDirb
 				}
 				
 				$l = strlen( $str );
-				$str = str_pad($str,50,' ')."  C=".$t_infos['http_code'];
-				$str .= str_pad('',10,' ')."L=".$t_infos['size_download'];
+				$str = str_pad( $str, 70,' ');
+				$txt = "C=".$t_infos['http_code'];
+				if( $color ) {
+					$str .= Utils::_print( $txt, $color, false );
+				} else {
+					$str .= $txt;
+				}
+				$str .= str_pad('',10,' ');
+				$txt = "L=".$t_infos['size_download'];
+				if( $color ) {
+					$str .= Utils::_print( $txt, $color, false );
+				} else {
+					$str .= $txt;
+				}
 				
 				echo $str."\n";
 			}

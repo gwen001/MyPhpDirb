@@ -6,6 +6,7 @@ Note that this is an automated tool, manual check is still required.
 Usage: php myphp-dirb.php [OPTIONS] -t <target> -w <wordlist>
 
 Options:
+	-c	enable colored output
 	-h	print this help
 	-d	http code to display separated by comma (default=all)
 	-f	display full url
