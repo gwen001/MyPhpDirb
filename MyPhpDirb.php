@@ -205,7 +205,8 @@ class MyPhpDirb
 		//curl_setopt( $c, CURLOPT_NOBODY, true );
 		curl_setopt( $c, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $c, CURLOPT_FOLLOWLOCATION, $this->follow_redirection );
-		$datas = curl_exec( $c );
+		curl_exec( $c );
+		//$datas = curl_exec( $c );
 		$t_infos = curl_getinfo( $c );
 		//var_dump( $datas );
 		//var_dump($t_infos);
