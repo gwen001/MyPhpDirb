@@ -1,5 +1,5 @@
-# s3-buckets-extractor
-PHP tool to extract datas from Amazon S3 bucket  
+# My PHP Dirb
+PHP tool to brute force subdirectories
 Note that this is an automated tool, manual check is still required.  
 
 ```
