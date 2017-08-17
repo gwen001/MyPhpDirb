@@ -28,6 +28,10 @@ set_time_limit( 0 );
 				Utils::help();
 				break;
 
+			case '-b':
+				$myphpdirb->setDisplayDisableBanner();
+				break;
+
 			case '-c':
 				$myphpdirb->setDisplayColors();
 				break;
@@ -46,6 +50,10 @@ set_time_limit( 0 );
 				$i++;
 				break;
 
+			case '-q':
+				$myphpdirb->setVerbosity( 1 );
+				break;
+
 			case '-r':
 				$myphpdirb->setFollowRedirection();
 				$i++;
@@ -58,11 +66,6 @@ set_time_limit( 0 );
 
 			case '-t':
 				$myphpdirb->setMaxChild( $_SERVER['argv'][$i+1] );
-				$i++;
-				break;
-
-			case '-v':
-				$myphpdirb->setVerbosity( (int)$_SERVER['argv'][$i+1] );
 				$i++;
 				break;
 
@@ -89,7 +92,10 @@ set_time_limit( 0 );
 // main loop
 {
 	$cnt = $myphpdirb->run();
-	echo "\nFinished.\n\n";
+	if( $myphpdirb->getDisplayBanner() ) {
+		echo "\nFinished.\n";
+	}
+	echo "\n";
 }
 // ---
 

@@ -6,11 +6,13 @@ Note that this is an automated tool, manual check is still required.
 Usage: php myphp-dirb.php [OPTIONS] -t <target> -w <wordlist>
 
 Options:
+	-b	do not display banner
 	-c	enable colored output
 	-h	print this help
 	-d	http code to display separated by comma (default=all)
 	-f	display full url
 	-i	http code to NOT display separated by comma (default=none)
+	-q	do not display HTTP code and length
 	-r	follow redirection
 	-t	set threads (default=5)
 	-u	set url (required)

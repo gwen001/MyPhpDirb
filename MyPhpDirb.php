@@ -11,6 +11,7 @@ class MyPhpDirb
 	CONST MAGIC_WORD = 'FUZZ';
 	CONST DEFAULT_MAX_CHILD = 5;
 	CONST DEFAULT_COLOR = 'white';
+	CONST DEFAULT_VERBOSITY = 0;
 	
 	private $url = null;
 
@@ -23,10 +24,13 @@ class MyPhpDirb
 	/**
 	 * output stuff
 	 */
+	private $display_banner = true;
 	private $display_colors = false;
 	private $display_full_url = false;
 	private $display_http_code = null;
 	private $display_ignore_http_code = null;
+	
+	private $verbosity = self::DEFAULT_VERBOSITY;
 	
 	private $n_user_agent = 0;
 	private $t_user_agent = [
@@ -81,8 +85,9 @@ class MyPhpDirb
 		return true;
 	}
 
+	
 	public function getMaxChild() {
-		return $this->threads;
+		return $this->max_child;
 	}
 	public function setMaxChild( $v ) {
 		$this->max_child = abs( (int)$v );
@@ -107,6 +112,24 @@ class MyPhpDirb
 	}
 	public function setFollowRedirection() {
 		$this->follow_redirection = true;
+		return true;
+	}
+
+	
+	public function getVerbosity() {
+		return $this->verbosity;
+	}
+	public function setVerbosity( $v ) {
+		$this->verbosity = abs( (int)$v );
+		return true;
+	}
+
+	
+	public function getDisplayBanner() {
+		return $this->display_banner;
+	}
+	public function setDisplayDisableBanner() {
+		$this->display_banner = false;
 		return true;
 	}
 
@@ -157,21 +180,24 @@ class MyPhpDirb
 		$this->t_words = file( $this->wordlist, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES );
 		$this->n_words = count( $this->t_words );
 
-		echo "\n";
-		echo str_pad( '', 80, '-' )."\n";
-		echo "Url:\t\t".$this->url."\n";
-		echo "Wordlist:\t".$this->wordlist."\n";
-		echo "Words:\t\t".$this->n_words."\n";
-		if( $this->display_http_code ) {
-			echo "Display:\t".implode(',',$this->display_http_code)."\n";
-		} else {
-			echo "Display:\tall\n";
+		if( $this->display_banner ) {
+			echo "\n";
+			echo str_pad( '', 80, '-' )."\n";
+			echo "Url:\t\t".$this->url."\n";
+			echo "Wordlist:\t".$this->wordlist."\n";
+			echo "Words:\t\t".$this->n_words."\n";
+			if( $this->display_http_code ) {
+				echo "Display:\t".implode(',',$this->display_http_code)."\n";
+			} else {
+				echo "Display:\tall\n";
+			}
+			if( $this->display_ignore_http_code ) {
+				echo "Ignore:\t\t".implode(',',$this->display_ignore_http_code)."\n";
+			}
+			echo "Threads:\t".$this->max_child."\n";
+			echo str_pad( '', 80, '-' )."\n";
 		}
-		if( $this->display_ignore_http_code ) {
-			echo "Ignore:\t\t".implode(',',$this->display_ignore_http_code)."\n";
-		}
-		echo "Threads:\t".$this->max_child."\n";
-		echo str_pad( '', 80, '-' )."\n";
+		
 		echo "\n";
 	}
 
@@ -267,18 +293,22 @@ class MyPhpDirb
 				
 				$l = strlen( $str );
 				$str = str_pad( $str, 70,' ');
-				$txt = "C=".$t_infos['http_code'];
-				if( $color ) {
-					$str .= Utils::_print( $txt, $color, false );
-				} else {
-					$str .= $txt;
-				}
-				$str .= str_pad('',10,' ');
-				$txt = "L=".$t_infos['size_download'];
-				if( $color ) {
-					$str .= Utils::_print( $txt, $color, false );
-				} else {
-					$str .= $txt;
+				
+				if( $this->verbosity == 0 )
+				{
+					$txt = "C=".$t_infos['http_code'];
+					if( $color ) {
+						$str .= Utils::_print( $txt, $color, false );
+					} else {
+						$str .= $txt;
+					}
+					$str .= str_pad('',10,' ');
+					$txt = "L=".$t_infos['size_download'];
+					if( $color ) {
+						$str .= Utils::_print( $txt, $color, false );
+					} else {
+						$str .= $txt;
+					}
 				}
 				
 				echo $str."\n";
