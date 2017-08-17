@@ -93,9 +93,8 @@ set_time_limit( 0 );
 {
 	$cnt = $myphpdirb->run();
 	if( $myphpdirb->getDisplayBanner() ) {
-		echo "\nFinished.\n";
+		echo "\nFinished.\n\n";
 	}
-	echo "\n";
 }
 // ---
 

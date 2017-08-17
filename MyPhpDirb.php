@@ -196,9 +196,8 @@ class MyPhpDirb
 			}
 			echo "Threads:\t".$this->max_child."\n";
 			echo str_pad( '', 80, '-' )."\n";
+			echo "\n";
 		}
-		
-		echo "\n";
 	}
 
 	
@@ -292,10 +291,10 @@ class MyPhpDirb
 				}
 				
 				$l = strlen( $str );
-				$str = str_pad( $str, 70,' ');
 				
 				if( $this->verbosity == 0 )
 				{
+					$str .= str_pad( '', 70-$l,' ');
 					$txt = "C=".$t_infos['http_code'];
 					if( $color ) {
 						$str .= Utils::_print( $txt, $color, false );
