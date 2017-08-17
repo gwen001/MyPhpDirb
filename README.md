@@ -1,5 +1,5 @@
 # My PHP Dirb
-PHP tool to brute force subdirectories
+PHP tool to brute force subdirectories  
 Note that this is an automated tool, manual check is still required.  
 
 ```
